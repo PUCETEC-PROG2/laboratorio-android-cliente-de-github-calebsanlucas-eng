@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        >
+        />
         <ImageView
             android:id="@+id/repo_owner_image"
             android:layout_width="100dp"
@@ -74,8 +74,4 @@
             </LinearLayout>
     </LinearLayout>
 
-
-
-
-
-</FrameLayout>
+    </FrameLayout>
