@@ -3,6 +3,7 @@ package ec.edu.uisek.githubclient
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ec.edu.uisek.githubclient.databinding.FragmentRepoItemBinding
 import ec.edu.uisek.githubclient.models.Repo
 
@@ -17,11 +18,11 @@ class RepoViewHolder(private val binding: FragmentRepoItemBinding) : RecyclerVie
         binding.repoDescription.text = repo.description ?:"El repositorio no tiene descripcion"
         binding.repoLang.text = repo.language ?: "Lenguaje no especificado"
         Glide.with(binding.root.context)
-            .load(repo.owner.avatarUrl)
+            .load(repo.owner.avatarURL)
             .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)
             .circleCrop()
-            .into(target. binding.repoOwnerImage)
+            .into(binding.repoOwnerImage)
     }
 }
 
@@ -44,7 +45,7 @@ class ReposAdapter : RecyclerView.Adapter<RepoViewHolder>() {
 
     // Se llama para vincular los datos a un ViewHolder en una posición específica.
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(repo = repositories (position))
+        holder.bind(repositories[position])
     }
 
     fun updateRepositories(newRepos:List<Repo>){
