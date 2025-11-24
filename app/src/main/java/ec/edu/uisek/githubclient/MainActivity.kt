@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.NewRepoFab.setOnClickListener {
-            displayNewRepoForm()
+        binding.newRepoFab.setOnClickListener {
+            displayNewRepo()
         }
 
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun showMessage (msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG)show()
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     private fun displayNewRepo(){
