@@ -1,5 +1,6 @@
 package ec.edu.uisek.githubclient
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,9 +25,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.NewRepoFab.setOnClickListener {
+            displayNewRepoForm()
+        }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         setupRecyclerView()
         fetchRepositories()
-
     }
 
     private fun setupRecyclerView(){
@@ -62,13 +72,21 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Repo>?>, t: Throwable) {
-                showMessage(msg = "Error de conexión")
-                Log.e("MainActivity", "Error de conexión: ${t.message}")
+                val errMsg = "Error de conexión: ${t.message}"
+                Log.e("MainActivity", errMsg, t)
+                showMessage(errMsg)
             }
         })
     }
 
 
-private fun showMessage (msg: String) {
-    Toast.makeText(this, msg, Toast.LENGTH_LONG)
-}}
+    private fun showMessage (msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG)show()
+    }
+
+    private fun displayNewRepo(){
+        Intent(this, RepoForm::class.java).apply {
+            startActivity(this)
+        }
+    }
+}
