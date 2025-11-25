@@ -8,3 +8,11 @@ class RepoOwner (
     val login: String,
     @SerializedName(value = "avatar_url")
     val avatarURL: String,)
+
+data class RepoUpdateRequest(
+    @SerializedName("name")
+    val name: String,
+
+    @SerializedName("description")
+    val description: String?
+)

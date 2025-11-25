@@ -7,15 +7,21 @@ import com.bumptech.glide.Glide
 import ec.edu.uisek.githubclient.databinding.FragmentRepoItemBinding
 import ec.edu.uisek.githubclient.models.Repo
 
-// 1. Clase ViewHolder: Contiene las referencias a las vistas de un solo ítem.
-//    Usa la clase de ViewBinding generada para fragment_repo_item.xml.
+// PASO 1: Define la interfaz para comunicar acciones a la Activity/Fragment.
+// Esta interfaz permitirá que el Adapter le diga a la MainActivity que se ha pulsado un botón.
+interface OnRepoActionListener {
+    fun onEditRepo(repo: Repo)
+    fun onDeleteRepo(repo: Repo)
+}
+
+// Clase ViewHolder: No cambia mucho, solo su función bind ahora recibe el listener.
 class RepoViewHolder(private val binding: FragmentRepoItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    // 2. Función para vincular datos a las vistas del ítem.
-    //    Por ahora, usaremos datos de ejemplo.
-    fun bind(repo:Repo) {
+    // La función 'bind' ahora también necesita el listener para configurar los clics de los botones.
+    fun bind(repo: Repo, listener: OnRepoActionListener) {
+        // --- Tu código existente para mostrar los datos ---
         binding.repoName.text = repo.name
-        binding.repoDescription.text = repo.description ?:"El repositorio no tiene descripcion"
+        binding.repoDescription.text = repo.description ?: "El repositorio no tiene descripcion"
         binding.repoLang.text = repo.language ?: "Lenguaje no especificado"
         Glide.with(binding.root.context)
             .load(repo.owner.avatarURL)
@@ -23,18 +29,29 @@ class RepoViewHolder(private val binding: FragmentRepoItemBinding) : RecyclerVie
             .error(R.mipmap.ic_launcher)
             .circleCrop()
             .into(binding.repoOwnerImage)
+
+        // --- PASO 2: Configurar los listeners para los botones ---
+        // Usamos el ViewBinding (binding) para acceder a los botones que agregamos en el XML.
+        binding.editButton.setOnClickListener {
+            // Cuando se hace clic, se llama a la función correspondiente del listener,
+            // pasando el 'repo' de esta fila.
+            listener.onEditRepo(repo)
+        }
+
+        binding.deleteButton.setOnClickListener {
+            listener.onDeleteRepo(repo)
+        }
     }
 }
 
-// 3. Clase Adapter: Gestiona la creación y actualización de los ViewHolders.
-class ReposAdapter : RecyclerView.Adapter<RepoViewHolder>() {
+// Clase Adapter: Ahora necesita recibir el listener para pasárselo a cada ViewHolder.
+// PASO 3: Modifica el constructor para que acepte una instancia de OnRepoActionListener.
+class ReposAdapter(private val listener: OnRepoActionListener) : RecyclerView.Adapter<RepoViewHolder>() {
 
-    private var repositories : List<Repo> = emptyList()
+    private var repositories: List<Repo> = emptyList()
     override fun getItemCount(): Int = repositories.size
 
-    // Se llama para crear un nuevo ViewHolder cuando el RecyclerView lo necesita.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
-        // Infla la vista del ítem usando ViewBinding
         val binding = FragmentRepoItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -43,12 +60,14 @@ class ReposAdapter : RecyclerView.Adapter<RepoViewHolder>() {
         return RepoViewHolder(binding)
     }
 
-    // Se llama para vincular los datos a un ViewHolder en una posición específica.
+    // PASO 4: Modifica onBindViewHolder para pasar el listener y el repo al método bind.
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(repositories[position])
+        val repo = repositories[position]
+        // Llama a la función 'bind' del ViewHolder, pasando tanto el repo como el listener.
+        holder.bind(repo, listener)
     }
 
-    fun updateRepositories(newRepos:List<Repo>){
+    fun updateRepositories(newRepos: List<Repo>) {
         repositories = newRepos
         notifyDataSetChanged()
     }

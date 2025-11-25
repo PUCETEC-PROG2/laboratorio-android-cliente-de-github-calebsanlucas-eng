@@ -27,14 +27,14 @@ class RepoForm : AppCompatActivity() {
     }
 
     private fun validateForm(): Boolean {
-        val repoName = repoFormBinding.repoNameInput.text.toString()
+        val repoName = repoFormBinding.repoNameInput.text.toString().trim()
 
         if (repoName.isBlank()) {
             repoFormBinding.repoNameInput.error = "El nombre del repositorio es requerido"
             return false
         }
 
-        if (repoName.contains("")) {
+        if (repoName.contains(" ")) {
             repoFormBinding.repoNameInput.error = "El nombre del repositorio no puede contener espacios"
             return false
         }
