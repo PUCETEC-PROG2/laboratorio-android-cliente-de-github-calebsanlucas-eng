@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import ec.edu.uisek.githubclient.databinding.FragmentRepoItemBinding
 import ec.edu.uisek.githubclient.models.Repo
 
-// PASO 1: Define la interfaz para comunicar acciones a la Activity/Fragment.
+//Define la interfaz para comunicar acciones a la Activity/Fragment.
 // Esta interfaz permitirá que el Adapter le diga a la MainActivity que se ha pulsado un botón.
 interface OnRepoActionListener {
     fun onEditRepo(repo: Repo)

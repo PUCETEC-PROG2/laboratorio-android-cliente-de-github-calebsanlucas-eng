@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), OnRepoActionListener {
         showDeleteConfirmationDialog(repo)
     }
 
-    // --- PASO 4: Lógica para diálogos y llamadas a la API de edición/eliminación ---
+    //Lógica para diálogos y llamadas a la API de edición/eliminación ---
 
     private fun showEditRepoDialog(repo: Repo) {
         val editText = EditText(this).apply {
