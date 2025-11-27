@@ -7,4 +7,6 @@
     <string name="text_lang">Kotlin</string>
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
+    <string name="eliminar_repositorio">Eliminar Repositorio</string>
+    <string name="editar_repositorio">Editar Repositorio</string>
 </resources>
